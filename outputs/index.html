@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brazil 2026 General Elections — Analysis</title>
+<style>
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --pl:#1d4e89; --pt:#c1121f; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header { background: linear-gradient(135deg, #0b1f3a 0%, #1d4e89 55%, #2a6db5 100%); color:#fff;
+    padding: 56px 28px 48px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header h1 { margin:0 0 10px; font-size: 44px; letter-spacing:-.02em; line-height:1.08; }
+  header p { margin:0; max-width: 760px; color:#dbeafe; font-size:16.5px; line-height:1.55; }
+  .badges { display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; }
+  .badge { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22);
+    padding:7px 13px; border-radius:999px; font-size:12.5px; letter-spacing:.02em; }
+  main { padding: 34px 28px 60px; }
+  .kpis { display:grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap:14px; margin: -66px auto 40px; }
+  .kpi { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+    box-shadow: 0 6px 24px rgba(15,23,42,.06); }
+  .kpi .v { font-size:27px; font-weight:750; letter-spacing:-.02em; }
+  .kpi .l { font-size:11px; font-weight:650; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-top:5px; }
+  .kpi .s { font-size:12px; color:var(--muted); margin-top:4px; }
+  h2 { font-size:23px; margin:44px 0 16px; letter-spacing:-.01em; }
+  .nbs { display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:16px; }
+  .nbc { display:block; background:#fff; border:1px solid var(--line); border-radius:14px; padding:20px;
+    text-decoration:none; color:inherit; transition: transform .15s ease, box-shadow .15s ease; }
+  .nbc:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(15,23,42,.09); }
+  .nbc-tag { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#2563eb; }
+  .nbc h3 { margin:8px 0 8px; font-size:19px; }
+  .nbc p { margin:0; color:#475569; font-size:13.5px; line-height:1.55; }
+  .nbc-meta { margin-top:12px; font-size:12px; color:var(--muted); }
+  .gallery { display:grid; grid-template-columns: repeat(auto-fit, minmax(340px,1fr)); gap:18px; }
+  .fig { margin:0; background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .fig img { width:100%; display:block; aspect-ratio: 12/7; object-fit: contain; background:#fff; }
+  .fig figcaption { padding:12px 14px 14px; font-size:12.5px; color:var(--muted); }
+  .fig figcaption b { display:block; color:var(--ink); font-size:13.5px; margin-bottom:3px; }
+  footer { border-top:1px solid var(--line); padding:26px 28px 40px; color:var(--muted); font-size:12.5px; }
+  code { background:#eef2f7; padding:1px 5px; border-radius:5px; font-size:12px; }
+  .links a { color:#1d4e89; }
+</style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:18px;padding:10px 22px;background:#0b1f3a;color:#fff;box-shadow:0 2px 10px rgba(15,23,42,.15)">
+  <a href="index.html" style="color:#fff;font-weight:750;font-size:15px;text-decoration:none">Brazil 2026</a>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <a href="index.html" style="background:rgba(255,255,255,.18);color:#fff;font-size:12.5px;font-weight:600;padding:5px 9px;border-radius:7px;text-decoration:none">Home</a>
+    <a href="html_notebooks/00_data_preprocessing_validation.html" style="color:#cbd5e1;font-size:12.5px;padding:5px 9px;border-radius:7px;text-decoration:none">00 · Data &amp; validation</a>
+    <a href="html_notebooks/01_panorama_nacional.html" style="color:#cbd5e1;font-size:12.5px;padding:5px 9px;border-radius:7px;text-decoration:none">01 · National panorama</a>
+    <a href="html_notebooks/02_estados_congresso_senado.html" style="color:#cbd5e1;font-size:12.5px;padding:5px 9px;border-radius:7px;text-decoration:none">02 · States &amp; Congress</a>
+    <a href="html_notebooks/03_eleitorado_idade_demografia.html" style="color:#cbd5e1;font-size:12.5px;padding:5px 9px;border-radius:7px;text-decoration:none">03 · Electorate &amp; age</a>
+  </div>
+</nav>
+<header>
+  <div class="wrap">
+    <h1>Brazil 2026 General Elections</h1>
+    <p>A complete, data-driven reading of the October 2026 general elections — president, 27 governors, 54 Senate seats, 513 deputies and 1,059 state seats — built from the official TSE open data and IBGE meshes, with interactive maps for the country and for every state.</p>
+    <div class="badges">
+      <span class="badge">4 Jupyter notebooks</span>
+      <span class="badge">158.7 M voters</span>
+      <span class="badge">5,571 municipalities</span>
+      <span class="badge">6.0 GB of raw results</span>
+      <span class="badge">Fully reproducible</span>
+      <a class="badge" href="../README.md" style="color:#fff;text-decoration:none">Full report (README) →</a>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <div class="kpis">
+    <div class="kpi"><div class="v">79.1%</div><div class="l">Turnout</div><div class="s">124.8 M of 157.6 M voters</div></div>
+    <div class="kpi"><div class="v">51.8%</div><div class="l">Runoff winner</div><div class="s">Lula (PT) 64.3 M — Bolsonaro (PL) 59.8 M</div></div>
+    <div class="kpi"><div class="v">121</div><div class="l">PL Chamber seats</div><div class="s">of 513; PT federation 88</div></div>
+    <div class="kpi"><div class="v">19 / 54</div><div class="l">Senate seats won by the PL</div><div class="s">the 2026 class of 54</div></div>
+    <div class="kpi"><div class="v">41.6</div><div class="l">Median age of voters</div><div class="s">60+ is 23.7% of the electorate</div></div>
+  </div>
+
+  <h2>The notebooks</h2>
+  <div class="nbs">
+  <a class="nbc" href="html_notebooks/00_data_preprocessing_validation.html">
+    <div class="nbc-tag">Notebook 0</div>
+    <h3>Data, preprocessing and validation</h3>
+    <p>File inventory, schema and encoding checks, exact vote reconciliation against the TSE totals, seat counts, the TSE to IBGE crosswalk and the geometry - the entry point of the project.</p>
+    <div class="nbc-meta">1 map · 2 charts · 6 validation tables</div>
+  </a>
+  <a class="nbc" href="html_notebooks/01_panorama_nacional.html">
+    <div class="nbc-tag">Notebook 1</div>
+    <h3>National Panorama</h3>
+    <p>Electorate and turnout, the presidential race in two rounds, the municipal geography of the vote, and the translation of votes into 513 Chamber seats.</p>
+    <div class="nbc-meta">5 maps · 8 charts · 6 tables · <span style="color:#1d4e89">read online</span></div>
+  </a>
+  <a class="nbc" href="html_notebooks/02_estados_congresso_senado.html">
+    <div class="nbc-tag">Notebook 2</div>
+    <h3>States, Congress and the Senate</h3>
+    <p>All 27 governorships, the 54-seat Senate class, Chamber and assembly composition, disproportionality by state, and a dossier with an interactive map for every federal unit.</p>
+    <div class="nbc-meta">31 maps · 12 charts · 34 tables · <span style="color:#1d4e89">read online</span></div>
+  </a>
+  <a class="nbc" href="html_notebooks/03_eleitorado_idade_demografia.html">
+    <div class="nbc-tag">Notebook 3</div>
+    <h3>Electorate, Age and Demography</h3>
+    <p>The 158.7 million voters by age, gender and schooling; the age pyramid; and the ecological test of whether demography predicts the vote and the turnout.</p>
+    <div class="nbc-meta">4 maps · 9 charts · 4 tables · <span style="color:#1d4e89">read online</span></div>
+  </a>
+  </div>
+
+  <p style="font-size:12.5px;color:#64748b;margin:-6px 0 0">
+    Source notebooks:
+    <a href="../00_data_preprocessing_validation.ipynb">00</a> ·
+    <a href="../01_panorama_nacional.ipynb">01</a> ·
+    <a href="../02_estados_congresso_senado.ipynb">02</a> ·
+    <a href="../03_eleitorado_idade_demografia.ipynb">03</a>
+    (.ipynb, for JupyterLab or VS Code)
+  </p>
+
+  <h2>Figures</h2>
+  <div class="gallery">
+    <figure class="fig">
+      <a href="png/n1_turnout_uf.png" target="_blank"><img src="png/n1_turnout_uf.png" alt="Turnout by state" loading="lazy"></a>
+      <figcaption><b>Turnout by state</b><span>79.1% nationally; Ceará 84.5%, Mato Grosso do Sul 76.1%.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n1_pres1_winner.png" target="_blank"><img src="png/n1_pres1_winner.png" alt="Presidential first round — winner by state" loading="lazy"></a>
+      <figcaption><b>Presidential first round — winner by state</b><span>Bolsonaro 15 states, Lula 12 + abroad.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n1_runoff_margin_municipal.png" target="_blank"><img src="png/n1_runoff_margin_municipal.png" alt="Runoff margin, municipality by municipality" loading="lazy"></a>
+      <figcaption><b>Runoff margin, municipality by municipality</b><span>Lula 2,876 municipalities, Bolsonaro 2,695.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n1_chamber_sunburst.png" target="_blank"><img src="png/n1_chamber_sunburst.png" alt="Chamber of Deputies by federation" loading="lazy"></a>
+      <figcaption><b>Chamber of Deputies by federation</b><span>PL 121 seats; PT/PCdoB/PV 88; UNIÃO/PP 87.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n2_governors_map.png" target="_blank"><img src="png/n2_governors_map.png" alt="Governors elected in 2026" loading="lazy"></a>
+      <figcaption><b>Governors elected in 2026</b><span>PL 6, PSD 5, PP 4, PT 4, Republicanos 4.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n2_senate_map.png" target="_blank"><img src="png/n2_senate_map.png" alt="Senate — party of the top senator by state" loading="lazy"></a>
+      <figcaption><b>Senate — party of the top senator by state</b><span>PL 19 of the 54 seats renewed.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n2_chamber_party.png" target="_blank"><img src="png/n2_chamber_party.png" alt="Chamber seats by party" loading="lazy"></a>
+      <figcaption><b>Chamber seats by party</b><span>20 parties; PL 23.6% of the seats.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n2_chamber_seats_state.png" target="_blank"><img src="png/n2_chamber_seats_state.png" alt="Chamber delegation size by state" loading="lazy"></a>
+      <figcaption><b>Chamber delegation size by state</b><span>8 to 70 deputies per state.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n3_age_pyramid.png" target="_blank"><img src="png/n3_age_pyramid.png" alt="Age pyramid of the electorate" loading="lazy"></a>
+      <figcaption><b>Age pyramid of the electorate</b><span>Median voter: 41.6 years; 60+ is 23.7%.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n3_median_age_state.png" target="_blank"><img src="png/n3_median_age_state.png" alt="Median age by state" loading="lazy"></a>
+      <figcaption><b>Median age by state</b><span>Pará 36.2 years, Rio Grande do Sul 44.8.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n3_median_age_municipal.png" target="_blank"><img src="png/n3_median_age_municipal.png" alt="Median age by municipality" loading="lazy"></a>
+      <figcaption><b>Median age by municipality</b><span>5,571 municipal profiles, 29.3 to 55.0 years.</span></figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="png/n3_lula_vs_age.png" target="_blank"><img src="png/n3_lula_vs_age.png" alt="Lula's runoff share vs municipal median age" loading="lazy"></a>
+      <figcaption><b>Lula's runoff share vs municipal median age</b><span>r = -0.44; youth share r = +0.56.</span></figcaption>
+    </figure>
+  </div>
+
+  <h2>How it is built</h2>
+  <p class="links" style="color:#475569;font-size:13.5px;line-height:1.65">
+  Raw data: TSE <code>votacao_candidato_munzona_2026</code> (27 files, 6.0 GB), <code>detalhe_votacao_munzona_2026</code>,
+  <code>votacao_secao_2026_BR</code>, <code>perfil_eleitorado_2026</code> and <code>consulta_cand_2026</code>;
+  geometry from the IBGE 2022 municipal and state meshes. The pipeline in <code>scripts/</code> converts everything to
+  Parquet caches with DuckDB, matches the 5,571 TSE municipality codes to IBGE codes, simplifies the polygons and keeps
+  the map winding compatible with Plotly. The notebooks read only the caches, so they run in seconds.
+  </p>
+</main>
+<footer>
+  Sources: Tribunal Superior Eleitoral (open data, 2026), IBGE (malhas territoriais 2022). Figures rendered with Plotly;
+  notebooks executed with nbclient. Seat and vote tabulations are the author's, from the official files.
+</footer>
+</body>
+</html>
